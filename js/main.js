@@ -1,13 +1,10 @@
 const WORD_DATA_SET = require('./wd/WORD_DATA_SET.js')
-
-console.log(WORD_DATA_SET)
-
 // Function to submit a user's guess and update the game board and letter status
 function SubmitWord (gameBoard, letterStatus, guess, goalWord) {
   // Function to determine if a guess is valid (i.e., uses only valid letters and is the correct length)
-  function IsWordValid (guess) {
+  function IsWordValid (guess, goalWord) {
     if (guess.length === goalWord.length) {
-      if (guess in WORD_DATA_SET) {
+      if (WORD_DATA_SET.has(guess)) {
         return true
       }
     }
@@ -43,7 +40,7 @@ function SubmitWord (gameBoard, letterStatus, guess, goalWord) {
       }
     }
 
-    for (let i = guessLetters.length - 1; i >= 0; i++) {
+    for (let i = guessLetters.length - 1; i >= 0; i--) {
       if (goalLetters.includes(guessLetters[i])) {
         if (!fitness[guessLetters] === 'found') {
           if (guessLettersCounter[guessLetters[i]] > goalLettersCounter[guessLetters[i]]) {
@@ -58,15 +55,15 @@ function SubmitWord (gameBoard, letterStatus, guess, goalWord) {
   }
 
   // Function to update the letter status based on the fitness of the guess
-  function UpdateLetterStatus (letterStatus, fitness) {
+  function UpdateLetterStatus (letterStatus, guess, fitness) {
     for (const k in fitness) {
       if (fitness[k] === 'found') {
-        letterStatus[k] = fitness[k]
+        letterStatus[guess[k]] = fitness[k]
       } else {
         if (fitness[k] === 'seen') {
-          letterStatus[k] = fitness[k]
+          letterStatus[guess[k]] = fitness[k]
         } else if (fitness[k] === 'unk') {
-          letterStatus[k] = fitness[k]
+          letterStatus[guess[k]] = fitness[k]
         }
       }
     }
@@ -76,7 +73,7 @@ function SubmitWord (gameBoard, letterStatus, guess, goalWord) {
   // Function to update the game board based on the guess and its fitness
   function UpdateGameBoard (gameBoard, guess, fitness) {
     let y = 0
-    while (gameBoard[y][0].letter === '-') {
+    while (gameBoard[y][0].letter !== '-') {
       y += 1
     }
 
@@ -85,21 +82,23 @@ function SubmitWord (gameBoard, letterStatus, guess, goalWord) {
       gameBoard[y][x].letter = wordLetters[x]
       gameBoard[y][x].color = fitness[x]
     }
+
     return gameBoard
   }
   guess = guess.toLowerCase() // convert to lowercase to standardize input
 
   if (!IsWordValid(guess, goalWord)) {
-    return // TO DO RETRY
+    console.log('Invalid guess')
+    return { gameBoard, letterStatus } // TO DO RETRY
   }
 
   const fitness = GetWordFitness(guess, goalWord)
   gameBoard = UpdateGameBoard(gameBoard, guess, fitness)
-  letterStatus = UpdateLetterStatus(guess, fitness)
-  return (gameBoard, letterStatus)
+  letterStatus = UpdateLetterStatus(letterStatus, guess, fitness)
+  return { gameBoard, letterStatus }
 }
 
-function InitGame (lCount, rows, difficulty) {
+function InitGame (lCount, rows, preFilled, difficulty) {
   // Function to initialize the status of each letter
   function InitLetterStatus () {
     const letterStatus = {
@@ -133,7 +132,7 @@ function InitGame (lCount, rows, difficulty) {
     return letterStatus
   }
 
-  function InitBoard (goalWord, lCount, rows, difficulty) {
+  function InitBoard (letterStatus, goalWord, lCount, rows, preFilled = 6, difficulty) {
     const gameBoard = []
     for (let y = 0; y < rows; y++) {
       const row = []
@@ -145,7 +144,7 @@ function InitGame (lCount, rows, difficulty) {
       }
       gameBoard[y] = row
     }
-    return PreFillBoard(gameBoard, goalWord, rows, difficulty)
+    return PreFillBoard(gameBoard, letterStatus, goalWord, rows, preFilled, difficulty)
   }
 
   function GenerateWord (lCount, difficulty, goalWord = null) {
@@ -160,33 +159,39 @@ function InitGame (lCount, rows, difficulty) {
       return words[Math.floor(Math.random() * words.length)]
     } else {
       // TODO SMART PICK
-      return words[Math.floor(Math.random() * words.length)]
+      const i1 = Math.floor(Math.random() * lCount)
+      const i2 = Math.floor(Math.random() * lCount)
+      const PARTIAL_WORD_DATA_SET = Array.from(WORD_DATA_SET).filter(word => word.split('').length === goalWord.length && word.includes(goalWord[i1]) && word.includes(goalWord[i2]))
+      return PARTIAL_WORD_DATA_SET[Math.floor(Math.random() * PARTIAL_WORD_DATA_SET.length)]
     }
   }
 
-  function PreFillBoard (gameBoard, letterStatus, goalWord, rows = 2, difficulty = 15) {
-    for (let i = 0; i < rows; i++) {
-      const guess = GenerateWord(lCount, difficulty, goalWord) // generate a 5-letter word by default
-      const [_gameBoard, _letterStatus] = SubmitWord(gameBoard, letterStatus, guess, goalWord)
-      gameBoard = _gameBoard
-      letterStatus = _letterStatus
+  function PreFillBoard (gameBoard, letterStatus, goalWord, rows = 6, preFilled = 2, difficulty = 15) {
+    if (preFilled === 0) {
+      return { gameBoard, letterStatus }
     }
-    return (gameBoard, letterStatus)
+    const guess = GenerateWord(lCount, difficulty, goalWord)
+    const newBoardAndStatus = SubmitWord(gameBoard, letterStatus, guess, goalWord)
+    return PreFillBoard(newBoardAndStatus.gameBoard, newBoardAndStatus.letterStatus, goalWord, rows, preFilled - 1, difficulty)
   }
 
   const goalWord = GenerateWord(lCount, difficulty)
-  let letterStatus = InitLetterStatus()
-  let gameBoard = InitBoard(goalWord, lCount, rows, difficulty)
-  const [__gameBoard, __letterStatus] = PreFillBoard(gameBoard, letterStatus, goalWord, rows, difficulty)
-  gameBoard = __gameBoard
-  letterStatus = __letterStatus
-  return (gameBoard, letterStatus)
+  console.log(goalWord)
+  const letterStatus = InitLetterStatus()
+  return InitBoard(letterStatus, goalWord, lCount, rows, preFilled, difficulty)
 }
 
 const lCount = 5
 const difficulty = 15
-const rows = 2
-const [gameBoard, letterStatus] = InitGame(lCount, rows, difficulty)
+const rows = 6
+const preFilled = 2
+const newBoardAndStatus = InitGame(lCount, rows, preFilled, difficulty)
+const gameBoard = newBoardAndStatus.gameBoard
+const letterStatus = newBoardAndStatus.letterStatus
+
+if (gameBoard[gameBoard.length - 1][0].letter !== '-') {
+  console.log('Done!')
+}
 
 console.log(gameBoard)
 console.log(letterStatus)

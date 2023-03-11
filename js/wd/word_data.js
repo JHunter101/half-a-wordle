@@ -42,7 +42,7 @@ function parseCSV (str) {
 function saveToFile (data, fileName) {
   data = JSON.stringify(data)
   fs.writeFile(path.join(__dirname, fileName + '.js'),
-  `/* eslint-disable semi */
+`/* eslint-disable semi */
 /* eslint-disable eol-last */
 /* eslint-disable object-curly-spacing */
 /* eslint-disable key-spacing */
@@ -53,9 +53,9 @@ function saveToFile (data, fileName) {
 const ${fileName} = ${data}
 module.exports = ${fileName};
 `, function (err) {
-    if (err) throw err
-    console.log(`${fileName} saved!`)
-  })
+  if (err) throw err
+  console.log(`${fileName} saved!`)
+})
 }
 
 // Define a function for linear normalization
@@ -106,5 +106,20 @@ filteredData.forEach((row) => {
   }
 })
 
-// Save the word data list and set to separate files
-saveToFile(Array.from(wordDataSetJS), 'WORD_DATA_SET')
+const fileName = 'WORD_DATA_SET'
+const data = JSON.stringify(Array.from(wordDataSetJS))
+fs.writeFile(path.join(__dirname, fileName + '.js'),
+`/* eslint-disable semi */
+/* eslint-disable eol-last */
+/* eslint-disable object-curly-spacing */
+/* eslint-disable key-spacing */
+/* eslint-disable quote-props */
+/* eslint-disable comma-spacing */
+/* eslint-disable quotes */
+/* eslint-disable no-unused-vars */
+const ${fileName} = new Set(${data})
+module.exports = ${fileName};
+`, function (err) {
+  if (err) throw err
+  console.log(`${fileName} saved!`)
+})
