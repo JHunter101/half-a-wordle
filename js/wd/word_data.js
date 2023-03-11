@@ -41,7 +41,18 @@ function parseCSV (str) {
 // Define a function to save data to a file
 function saveToFile (data, fileName) {
   data = JSON.stringify(data)
-  fs.writeFile(path.join(__dirname, fileName + '.js'), `var ${fileName} = ${data};`, function (err) {
+  fs.writeFile(path.join(__dirname, fileName + '.js'),
+  `/* eslint-disable semi */
+/* eslint-disable eol-last */
+/* eslint-disable object-curly-spacing */
+/* eslint-disable key-spacing */
+/* eslint-disable quote-props */
+/* eslint-disable comma-spacing */
+/* eslint-disable quotes */
+/* eslint-disable no-unused-vars */
+const ${fileName} = ${data}
+module.exports = ${fileName};
+`, function (err) {
     if (err) throw err
     console.log(`${fileName} saved!`)
   })
