@@ -10,7 +10,6 @@ export type LetterStatusIndex = {
   [key: number]: 'found' | 'seen' | 'unk';
 };
 
-import { WordData } from '../../res/ts/GLOBAL_WORD_DATA_SET';
 import { GLOBAL_WORD_DATA_SET } from '../../res/ts/GLOBAL_WORD_DATA_SET';
 import { WD5K } from '../../res/ts/WD5K';
 import { WD10K } from '../../res/ts/WD10K';
@@ -20,10 +19,6 @@ import { WD16K } from '../../res/ts/WD16K';
 type BoardLetter = {
   letter: string;
   color: string;
-};
-
-type wordDict = {
-  [key: number]: string[];
 };
 
 declare global {
