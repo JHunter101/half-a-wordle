@@ -1,3 +1,16 @@
 {
-  "extends": "../node_modules/@tsconfig/recommended/tsconfig.json"
+  "extends": "../node_modules/@tsconfig/recommended/tsconfig.json",
+  "tasks": [
+        {
+            "type": "typescript",
+            "tsconfig": "tsconfig.json",
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
 }
