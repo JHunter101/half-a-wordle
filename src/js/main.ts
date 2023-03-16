@@ -10,10 +10,27 @@ export type LetterStatusIndex = {
   [key: number]: 'found' | 'seen' | 'unk';
 };
 
+import { WordData } from '../../res/ts/GLOBAL_WORD_DATA_SET';
+import { GLOBAL_WORD_DATA_SET } from '../../res/ts/GLOBAL_WORD_DATA_SET';
+import { WD5K } from '../../res/ts/WD5K';
+import { WD10K } from '../../res/ts/WD10K';
+import { WD15K } from '../../res/ts/WD15K';
+import { WD16K } from '../../res/ts/WD16K';
+
 type BoardLetter = {
   letter: string;
   color: string;
 };
+
+type wordDict = {
+  [key: number]: string[];
+};
+
+declare global {
+  interface Math {
+    seed: (s: any) => () => number;
+  }
+}
 
 function wordToRandom(str: string): number {
   Math.seed = function (s: any) {
@@ -49,7 +66,6 @@ function wordToRandom(str: string): number {
   return Math.random();
 }
 
-const WORD_DATA_SET = require('./wd/WORD_DATA_SET.js');
 // Function to submit a user's guess and update the game board and letter status
 function SubmitWord(
   gameBoard: BoardLetter[][],
@@ -60,7 +76,7 @@ function SubmitWord(
   // Function to determine if a guess is valid (i.e., uses only valid letters and is the correct length)
   function IsWordValid(guess: string, goalWord: string) {
     if (guess.length === goalWord.length) {
-      if (WORD_DATA_SET.has(guess)) {
+      if (GLOBAL_WORD_DATA_SET.has(guess)) {
         return true;
       }
     }
@@ -247,10 +263,17 @@ function InitGame(
     difficulty: number,
     goalWord = '',
   ): string {
-    function GetWordData(lCount: number, difficulty = 15) {
-      const path = './wd/wd_' + String(difficulty) + 'K.js';
-      const module = require(path);
-      return module[lCount];
+    function GetWordData(lCount: number, difficulty = 15): string[] {
+      switch (difficulty) {
+        case 5:
+          return WD5K[lCount];
+        case 15:
+          return WD10K[lCount];
+        case 25:
+          return WD15K[lCount];
+        default:
+          return WD16K[lCount];
+      }
     }
 
     const words = GetWordData(lCount, difficulty);
@@ -258,10 +281,12 @@ function InitGame(
       return words[Math.floor(Math.random() * words.length)];
     } else {
       // TODO SMART PICK
-      const i1 = Math.floor(wordToRandom(goalWord) * lCount);
-      const i2 = Math.floor(wordToRandom(goalWord + goalWord) * lCount);
-      const PARTIAL_WORD_DATA_SET = Array.from(WORD_DATA_SET).filter(
-        (word) =>
+      const i1: number = Math.floor(wordToRandom(goalWord) * lCount);
+      const i2: number = Math.floor(wordToRandom(goalWord + goalWord) * lCount);
+      const PARTIAL_WORD_DATA_SET: string[] = Array.from(
+        GLOBAL_WORD_DATA_SET,
+      ).filter(
+        (word: string) =>
           word.split('').length === goalWord.length &&
           word.includes(goalWord[i1]) &&
           word.includes(goalWord[i2]),
