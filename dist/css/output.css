@@ -521,8 +521,20 @@ video {
   grid-column: span 3 / span 3;
 }
 
+.m-auto {
+  margin: auto;
+}
+
+.flex {
+  display: flex;
+}
+
 .grid {
   display: grid;
+}
+
+.h-screen {
+  height: 100vh;
 }
 
 .select-none {
@@ -555,11 +567,11 @@ html * {
 body {
   display: block;
   margin: 0px;
+  height: 100vh;
 }
 
 .section {
-  padding: 5% 10%;
-  margin-bottom: 0;
+  padding: 4% 10%;
 }
 
 /*-------------------------------------------------------------- # Air Section --------------------------------------------------------------*/
@@ -571,39 +583,41 @@ body {
 
 /*-------------------------------------------------------------- # Game Section --------------------------------------------------------------*/
 
+#game {
+  padding: 0;
+  width: 100%;
+}
+
 #game .grid-cell {
   display: flex;
   justify-content: center;
   align-items: center;
-  outline: 0.5vw solid white;
+  outline: min(0.5vw, 5px) solid white;
   text-align: center;
+  aspect-ratio: 1/1;
 }
 
 #game .grid {
-  padding: 5% 10%;
-  gap: 2vw;
+  padding: 5vh 10%;
+  gap: min(2vw, 20px);
   place-items: center stretch;
+  margin: auto;
 }
 
 #game #game-board {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  grid-template-rows: repeat(6, minmax(0, 1fr));
 }
 
 #game #game-board .board-cell {
-  font-size: 6vw;
-  aspect-ratio: 3/4;
+  font-size: min(6vw, 60px);
 }
 
 #game #keyboard {
   grid-template-columns: repeat(20, minmax(0, 1fr));
   grid-template-rows: repeat(3, minmax(0, 1fr));
-  padding: 10% 0%;
-  gap: 2vw;
   place-items: center stretch;
 }
 
 #game #keyboard .keyboard-cell {
-  height: 10vw;
-  font-size: 3vw;
+  height: min(10vw, 100px);
+  font-size: min(3vw, 30px);
 }

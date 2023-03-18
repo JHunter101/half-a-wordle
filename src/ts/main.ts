@@ -1,15 +1,36 @@
 window.addEventListener('load', (event) => {
-  const lCount = 5;
+  let lCount = 5;
   const rows = 6;
+  const preFilled = 2;
+  const difficulty = 53;
+  const urlParams = new URLSearchParams(window.location.search);
+  const _lCount = urlParams.get('lCount');
+  if (_lCount) {
+    lCount = Number(_lCount);
+  }
+  setup(lCount, rows, preFilled, difficulty);
+});
+
+function setup(
+  lCount: number,
+  rows: number,
+  preFilled: number,
+  difficulty: number,
+) {
   sessionStorage.setItem('currentCellX', '0');
   sessionStorage.setItem('currentCellY', '0');
   onSight(lCount, rows);
   saveLocal(
-    { lCount: lCount, difficulty: 53, rows: rows, preFilled: 2 },
+    {
+      lCount: lCount,
+      difficulty: difficulty,
+      rows: rows,
+      preFilled: preFilled,
+    },
     { gameBoard: [], letterStatus: {}, goalWord: '' },
   );
   InitGame();
-});
+}
 
 // TYPES
 type LetterStatusLettersToIndex = {
@@ -61,6 +82,7 @@ function onSight(lCount = 5, rows = 6) {
     gameBoard.classList.add('grid');
     gameBoard.style.gridTemplateColumns = `repeat(${lCount}, minmax(0, 1fr))`;
     gameBoard.style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr))`;
+    gameBoard.style.width = `min(${80 + lCount * 2}%, ${800 + lCount * 40}px)`;
   }
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < lCount; x++) {
@@ -69,8 +91,10 @@ function onSight(lCount = 5, rows = 6) {
       div.classList.add('board-cell');
       div.classList.add('grid-cell');
       div.classList.add('select-none');
-      const fontSize = 14 - lCount;
-      div.style.fontSize = `${fontSize}vw`;
+      const fontSize = 8 - lCount * 0.5;
+      const maxSize = fontSize * 10;
+      div.style.fontSize = `min(${fontSize}vw, ${maxSize}px)`;
+      div.textContent = '-';
       if (gameBoard) {
         gameBoard.appendChild(div);
       }
@@ -113,6 +137,7 @@ function onSight(lCount = 5, rows = 6) {
   const keyboard = document.getElementById('keyboard');
   if (keyboard) {
     keyboard.classList.add('grid');
+    keyboard.style.width = `min(${80 + lCount * 2}%, ${1200 + lCount * 40}px)`;
   }
   keys.forEach((key) => {
     const kbd = document.createElement('kbd');
@@ -150,7 +175,7 @@ function writeKey(key: string) {
     }
   }
   if (/Backspace|Delete|Del/.test(key)) {
-    updateLetter(y, x - 1, '');
+    updateLetter(y, x - 1, '-');
     if (x > 0) {
       sessionStorage.setItem('currentCellX', String(x - 1));
     }
