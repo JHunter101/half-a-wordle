@@ -1,6 +1,6 @@
+import csv from 'csv-parser';
 import * as fs from 'fs';
 import * as path from 'path';
-import csv from 'csv-parser';
 
 const inputDirPath = './res/csv/';
 const outputDirPath = './src/wd/';
@@ -11,7 +11,6 @@ const GAME_WORD_DATA_SET: gameWordData = {};
 type inputWordData = {
   WORD: string;
   KFSMP: number;
-  NLET: number;
 };
 
 type gameWordData = {
@@ -20,7 +19,16 @@ type gameWordData = {
 
 let wordCount = 1;
 
-function linearNormalize(x: number, xMin = 0, xMax = 500, yMin = 1, yMax = 10) {
+function linearNormalize(
+  x: number,
+  xMin = 0,
+  xMax = 150000000,
+  yMin = 1,
+  yMax = 5,
+) {
+  if (x > xMax) {
+    x = xMax;
+  }
   const xRange = xMax - xMin;
   const yRange = yMax - yMin;
   const y = ((x - xMin) / xRange) * yRange + yMin;
@@ -30,16 +38,17 @@ function linearNormalize(x: number, xMin = 0, xMax = 500, yMin = 1, yMax = 10) {
 fs.createReadStream(path.join(inputDirPath, 'WORD_DATA.csv'))
   .pipe(csv())
   .on('data', (data: inputWordData) => {
+    data.WORD = data.WORD.toUpperCase();
     GLOBAL_WORD_DATA_SET.add(data.WORD);
 
-    if (!GAME_WORD_DATA_SET[data.NLET]) {
-      GAME_WORD_DATA_SET[data.NLET] = [];
+    if (!GAME_WORD_DATA_SET[data.WORD.length]) {
+      GAME_WORD_DATA_SET[data.WORD.length] = [];
     }
     for (let i = 0; i < linearNormalize(data.KFSMP); i++) {
-      GAME_WORD_DATA_SET[data.NLET].push(data.WORD);
+      GAME_WORD_DATA_SET[data.WORD.length].push(data.WORD);
     }
 
-    if (wordCount % 5000 === 0) {
+    if (wordCount % 10000 === 0) {
       saveToFile(GAME_WORD_DATA_SET, 'WD' + Math.floor(wordCount / 1000) + 'K');
     }
     wordCount += 1;

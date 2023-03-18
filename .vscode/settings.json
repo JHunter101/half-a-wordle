@@ -8,6 +8,5 @@
   "vs-code-prettier-eslint.prettierLast": true, // set as "true" to run 'prettier' last not first
   "eslint.nodePath": "${workspaceFolder}/../node_modules",
   "prettier.prettierPath": "${workspaceFolder}/../node_modules/prettier",
-  "typescript.tsdk": "${workspaceFolder}/../node_modules/typescript/lib",
-  "cSpell.words": ["sprawlopolis"]
+  "typescript.tsdk": "${workspaceFolder}/../node_modules/typescript/lib"
 }

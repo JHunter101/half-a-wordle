@@ -5,7 +5,7 @@ window.addEventListener('load', (event) => {
   sessionStorage.setItem('currentCellY', '0');
   onSight(lCount, rows);
   saveLocal(
-    { lCount: lCount, difficulty: 16, rows: rows, preFilled: 2 },
+    { lCount: lCount, difficulty: 53, rows: rows, preFilled: 2 },
     { gameBoard: [], letterStatus: {}, goalWord: '' },
   );
   InitGame();
@@ -44,10 +44,15 @@ type gameSettingsType = {
 
 // Import
 import { GLOBAL_WORD_DATA_SET } from '../wd/GLOBAL_WORD_DATA_SET.js';
-import { WD5K } from '../wd/WD5K.js';
 import { WD10K } from '../wd/WD10K.js';
-import { WD15K } from '../wd/WD15K.js';
-import { WD16K } from '../wd/WD16K.js';
+import { WD20K } from '../wd/WD20K.js';
+import { WD30K } from '../wd/WD30K.js';
+import { WD40K } from '../wd/WD40K.js';
+import { WD50K } from '../wd/WD50K.js';
+import { WD53K } from '../wd/WD53K.js';
+
+console.log(WD10K);
+console.log(GLOBAL_WORD_DATA_SET);
 
 // Front-end
 function onSight(lCount = 5, rows = 6) {
@@ -411,7 +416,7 @@ function SubmitWord(guess: string) {
   }
 
   guess = guess.toUpperCase(); // convert to lowercase to standardize input
-
+  console.log(guess);
   if (!IsWordValid(guess, goalWord)) {
     console.log('Invalid guess');
     return { gameBoard, letterStatus };
@@ -523,14 +528,26 @@ function InitGame(): void {
   ): string {
     function GetWordData(lCount: number, difficulty = 15): string[] {
       switch (difficulty) {
-        case 5:
-          return WD5K[lCount];
-        case 15:
+        case 10:
           return WD10K[lCount];
-        case 25:
-          return WD15K[lCount];
+          break;
+        case 20:
+          return WD20K[lCount];
+          break;
+        case 30:
+          return WD30K[lCount];
+          break;
+        case 40:
+          return WD40K[lCount];
+          break;
+        case 50:
+          return WD50K[lCount];
+          break;
+        case 53:
+          return WD53K[lCount];
+          break;
         default:
-          return WD16K[lCount];
+          return WD53K[lCount];
       }
     }
 

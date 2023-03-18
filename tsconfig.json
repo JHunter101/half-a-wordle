@@ -17,6 +17,7 @@
     "newLine": "LF",
     "outDir": "./dist/",
     "strict": true,
+    "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src/**/*.ts"],
