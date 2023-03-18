@@ -167,17 +167,19 @@ function updateLetter(y, x, letter, color = '') {
 }
 function updateLetterStatusColor(letter, color) {
     const cell = document.getElementById(`k-cell-${letter}`);
-    if (cell) {
-        if (color == 'unk') {
-            cell.style.backgroundColor = 'black';
+    setTimeout(() => {
+        if (cell) {
+            if (color == 'unk') {
+                cell.style.backgroundColor = 'black';
+            }
+            if (color == 'seen') {
+                cell.style.backgroundColor = '#b59f3b';
+            }
+            if (color == 'found') {
+                cell.style.backgroundColor = '#538d4e';
+            }
         }
-        if (color == 'seen') {
-            cell.style.backgroundColor = '#b59f3b';
-        }
-        if (color == 'found') {
-            cell.style.backgroundColor = '#538d4e';
-        }
-    }
+    }, 1100);
 }
 // Front to Back to Front
 function saveLocal(gameSettings = null, gameStatus = null) {
