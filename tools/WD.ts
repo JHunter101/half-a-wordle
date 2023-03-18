@@ -3,7 +3,7 @@ import * as path from 'path';
 import csv from 'csv-parser';
 
 const inputDirPath = './res/csv/';
-const outputDirPath = './res/ts/';
+const outputDirPath = './src/wd/';
 
 const GLOBAL_WORD_DATA_SET = new Set<string>();
 const GAME_WORD_DATA_SET: gameWordData = {};
