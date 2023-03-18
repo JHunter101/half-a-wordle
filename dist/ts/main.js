@@ -39,7 +39,7 @@ function onSight(lCount = 5, rows = 6) {
         gameBoard.classList.add('grid');
         gameBoard.style.gridTemplateColumns = `repeat(${lCount}, minmax(0, 1fr))`;
         gameBoard.style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr))`;
-        gameBoard.style.width = `min(${80 + lCount * 2}%, ${800 + lCount * 40}px)`;
+        gameBoard.style.width = `min(${40 + lCount * 6}%, ${400 + lCount * 60}px)`;
     }
     for (let y = 0; y < rows; y++) {
         for (let x = 0; x < lCount; x++) {
@@ -48,8 +48,8 @@ function onSight(lCount = 5, rows = 6) {
             div.classList.add('board-cell');
             div.classList.add('grid-cell');
             div.classList.add('select-none');
-            const fontSize = 8 - lCount * 0.5;
-            const maxSize = fontSize * 10;
+            const fontSize = 6 - lCount * 0.35;
+            const maxSize = (fontSize / 3) * 20;
             div.style.fontSize = `min(${fontSize}vw, ${maxSize}px)`;
             div.textContent = '-';
             if (gameBoard) {
@@ -92,7 +92,7 @@ function onSight(lCount = 5, rows = 6) {
     const keyboard = document.getElementById('keyboard');
     if (keyboard) {
         keyboard.classList.add('grid');
-        keyboard.style.width = `min(${80 + lCount * 2}%, ${1200 + lCount * 40}px)`;
+        keyboard.style.width = `min(${80 + lCount * 2}%, ${800 + lCount * 40}px)`;
     }
     keys.forEach((key) => {
         const kbd = document.createElement('kbd');
