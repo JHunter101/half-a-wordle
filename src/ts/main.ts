@@ -72,9 +72,6 @@ import { WD40K } from '../wd/WD40K.js';
 import { WD50K } from '../wd/WD50K.js';
 import { WD53K } from '../wd/WD53K.js';
 
-console.log(WD10K);
-console.log(GLOBAL_WORD_DATA_SET);
-
 // Front-end
 function onSight(lCount = 5, rows = 6) {
   const gameBoard = document.getElementById('game-board');
@@ -91,6 +88,7 @@ function onSight(lCount = 5, rows = 6) {
       div.classList.add('board-cell');
       div.classList.add('grid-cell');
       div.classList.add('select-none');
+      div.style.setProperty('--order', `${5 - x}`);
       const fontSize = 6 - lCount * 0.35;
       const maxSize = (fontSize / 3) * 20;
       div.style.fontSize = `min(${fontSize}vw, ${maxSize}px)`;
@@ -199,15 +197,18 @@ function updateLetter(y: number, x: number, letter: string, color = ''): void {
   if (cell) {
     cell.textContent = letter;
     if (color != '') {
-      if (color == 'unk') {
-        cell.style.backgroundColor = 'black';
-      }
-      if (color == 'seen') {
-        cell.style.backgroundColor = '#b59f3b';
-      }
-      if (color == 'found') {
-        cell.style.backgroundColor = '#538d4e';
-      }
+      cell.classList.add('anim-flip');
+      setTimeout(() => {
+        if (color == 'unk') {
+          cell.style.backgroundColor = 'black';
+        }
+        if (color == 'seen') {
+          cell.style.backgroundColor = '#b59f3b';
+        }
+        if (color == 'found') {
+          cell.style.backgroundColor = '#538d4e';
+        }
+      }, 250 + 100 * (5 - x));
     }
   }
 }
@@ -335,7 +336,17 @@ function SubmitWord(guess: string) {
       }
     }
 
-    // TODO: BAD INPUT
+    const y = sessionStorage.getItem('currentCellY');
+    const lCount = goalWord.length;
+    for (let i = 0; i < lCount; i++) {
+      const elem = document.getElementById(`b-cell-${y}${i}`);
+      if (elem) {
+        elem.classList.add('anim-shake');
+        setTimeout(() => {
+          elem.classList.remove('anim-shake');
+        }, 500);
+      }
+    }
     return false;
   }
 
@@ -441,7 +452,6 @@ function SubmitWord(guess: string) {
   }
 
   guess = guess.toUpperCase(); // convert to lowercase to standardize input
-  console.log(guess);
   if (!IsWordValid(guess, goalWord)) {
     console.log('Invalid guess');
     return { gameBoard, letterStatus };
@@ -513,6 +523,7 @@ function InitGame(): void {
     preFilled = 2,
     difficulty: number,
   ): { gameBoard: BoardLetter[][]; letterStatus: LetterStatusLetters } {
+    console.log(goalWord);
     let gameBoard = [];
     for (let y = 0; y < rows; y++) {
       const row = [];
