@@ -81,6 +81,9 @@ function onSight(lCount = 5, rows = 6) {
             kbd.id = `k-cell-${key}`;
             kbd.classList.add('col-span-2');
         }
+        kbd.addEventListener('click', function () {
+            writeKey(key);
+        });
         kbd.textContent = key;
         if (keyboard) {
             keyboard.appendChild(kbd);
@@ -88,7 +91,9 @@ function onSight(lCount = 5, rows = 6) {
     });
 }
 document.addEventListener('keydown', (event) => {
-    const key = event.key;
+    writeKey(event.key);
+});
+function writeKey(key) {
     const y = Number(sessionStorage.getItem('currentCellY'));
     const x = Number(sessionStorage.getItem('currentCellX'));
     const lCount = getFromSession('lCount');
@@ -114,7 +119,7 @@ document.addEventListener('keydown', (event) => {
         }
         SubmitWord(guess);
     }
-});
+}
 function updateLetter(y, x, letter, color = '') {
     letter = letter.toUpperCase();
     const cell = document.getElementById(`b-cell-${y}${x}`);
@@ -294,7 +299,7 @@ function SubmitWord(guess) {
     // Function to update the letter status based on the fitness of the guess
     function UpdateLetterStatus(letterStatus, guess, fitness) {
         for (const k in fitness) {
-            let status = letterStatus[Array.from(guess)[k]];
+            const status = letterStatus[Array.from(guess)[k]];
             if (fitness[k] === 'found') {
                 letterStatus[Array.from(guess)[k]] = fitness[k];
                 updateLetterStatusColor(Array.from(guess)[k], fitness[k]);

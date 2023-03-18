@@ -118,6 +118,9 @@ function onSight(lCount = 5, rows = 6) {
       kbd.id = `k-cell-${key}`;
       kbd.classList.add('col-span-2');
     }
+    kbd.addEventListener('click', function () {
+      writeKey(key);
+    });
     kbd.textContent = key;
     if (keyboard) {
       keyboard.appendChild(kbd);
@@ -126,7 +129,10 @@ function onSight(lCount = 5, rows = 6) {
 }
 
 document.addEventListener('keydown', (event: KeyboardEvent) => {
-  const key = event.key;
+  writeKey(event.key);
+});
+
+function writeKey(key: string) {
   const y = Number(sessionStorage.getItem('currentCellY'));
   const x = Number(sessionStorage.getItem('currentCellX'));
   const lCount = getFromSession('lCount');
@@ -136,7 +142,7 @@ document.addEventListener('keydown', (event: KeyboardEvent) => {
       sessionStorage.setItem('currentCellX', String(x + 1));
     }
   }
-  if (/Backspace|Delete/.test(key)) {
+  if (/Backspace|Delete|Del/.test(key)) {
     updateLetter(y, x - 1, '');
     if (x > 0) {
       sessionStorage.setItem('currentCellX', String(x - 1));
@@ -153,7 +159,7 @@ document.addEventListener('keydown', (event: KeyboardEvent) => {
     }
     SubmitWord(guess);
   }
-});
+}
 
 function updateLetter(y: number, x: number, letter: string, color = ''): void {
   letter = letter.toUpperCase();
@@ -362,7 +368,7 @@ function SubmitWord(guess: string) {
     fitness: LetterStatusIndex,
   ) {
     for (const k in fitness) {
-      let status = letterStatus[Array.from(guess)[k]];
+      const status = letterStatus[Array.from(guess)[k]];
       if (fitness[k] === 'found') {
         letterStatus[Array.from(guess)[k]] = fitness[k];
         updateLetterStatusColor(Array.from(guess)[k], fitness[k]);
