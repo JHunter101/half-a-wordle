@@ -63,6 +63,7 @@ function onSight(lCount = 5, rows = 6) {
       div.id = `b-cell-${y}${x}`;
       div.classList.add('board-cell');
       div.classList.add('grid-cell');
+      div.classList.add('select-none');
       const fontSize = 14 - lCount;
       div.style.fontSize = `${fontSize}vw`;
       if (gameBoard) {
@@ -112,6 +113,7 @@ function onSight(lCount = 5, rows = 6) {
     const kbd = document.createElement('kbd');
     kbd.classList.add('grid-cell');
     kbd.classList.add('keyboard-cell');
+    kbd.classList.add('select-none');
     if (['Enter', 'Del'].includes(key)) {
       kbd.classList.add('col-span-3');
     } else if (key !== '') {

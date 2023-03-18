@@ -525,6 +525,12 @@ video {
   display: grid;
 }
 
+.select-none {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
 .lowercase {
   text-transform: lowercase;
 }
