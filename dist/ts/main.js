@@ -170,7 +170,7 @@ function updateLetterStatusColor(letter, color) {
     setTimeout(() => {
         if (cell) {
             if (color == 'unk') {
-                cell.style.backgroundColor = 'black';
+                cell.style.backgroundColor = '#963939';
             }
             if (color == 'seen') {
                 cell.style.backgroundColor = '#b59f3b';
@@ -340,14 +340,16 @@ function SubmitWord(guess) {
     // Function to update the letter status based on the fitness of the guess
     function UpdateLetterStatus(letterStatus, guess, fitness) {
         for (const k in fitness) {
-            const status = letterStatus[Array.from(guess)[k]];
+            let status = letterStatus[Array.from(guess)[k]];
             if (fitness[k] === 'found') {
                 letterStatus[Array.from(guess)[k]] = fitness[k];
+                status = fitness[k];
                 updateLetterStatusColor(Array.from(guess)[k], fitness[k]);
             }
             else {
                 if (fitness[k] === 'seen' && status != 'found') {
                     letterStatus[Array.from(guess)[k]] = fitness[k];
+                    status = fitness[k];
                     updateLetterStatusColor(Array.from(guess)[k], fitness[k]);
                 }
                 else if (fitness[k] === 'unk' &&
