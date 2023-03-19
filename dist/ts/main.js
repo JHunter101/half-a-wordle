@@ -306,8 +306,8 @@ function SubmitWord(guess) {
             guessLettersCounter[guessLetters[i]] = guessLettersCounter[guessLetters[i]]
                 ? guessLettersCounter[guessLetters[i]] + 1
                 : 1;
-            goalLettersCounter[guessLetters[i]] = goalLettersCounter[guessLetters[i]]
-                ? goalLettersCounter[guessLetters[i]] + 1
+            goalLettersCounter[goalLetters[i]] = goalLettersCounter[goalLetters[i]]
+                ? goalLettersCounter[goalLetters[i]] + 1
                 : 1;
             if (goalLetters.includes(guessLetters[i])) {
                 if (guessLetters[i] === goalLetters[i]) {
@@ -321,6 +321,8 @@ function SubmitWord(guess) {
                 fitness[i] = 'unk';
             }
         }
+        console.log(guessLettersCounter);
+        console.log(goalLettersCounter);
         for (let i = guessLetters.length - 1; i >= 0; i--) {
             if (goalLetters.includes(guessLetters[i])) {
                 if (!(fitness[i] === 'found')) {
@@ -378,8 +380,6 @@ function SubmitWord(guess) {
     }
     const fitness = GetWordFitness(guess, goalWord);
     if (Object.values(fitness).reduce((count, value) => count + (value === 'found' ? 1 : 0), 0) >= getFromSession('lCount')) {
-        console.log(Object.values(fitness).reduce((count, value) => count + (value === 'found' ? 1 : 0), 0));
-        console.log(getFromSession('lCount'));
         console.log('Game Over');
     }
     gameBoard = UpdateGameBoard(gameBoard, guess, fitness);

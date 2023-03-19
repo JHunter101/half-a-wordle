@@ -33,7 +33,7 @@ function setup(
 }
 
 // TYPES
-type LetterStatusLettersToIndex = {
+type LetterStatusLettersToCount = {
   [key: string]: number;
 };
 
@@ -358,8 +358,8 @@ function SubmitWord(guess: string) {
     const goalLetters = goalWord.split('');
     const fitness: LetterStatusIndex = {};
 
-    const guessLettersCounter: LetterStatusLettersToIndex = {};
-    const goalLettersCounter: LetterStatusLettersToIndex = {};
+    const guessLettersCounter: LetterStatusLettersToCount = {};
+    const goalLettersCounter: LetterStatusLettersToCount = {};
 
     for (let i = 0; i < guessLetters.length; i++) {
       guessLettersCounter[guessLetters[i]] = guessLettersCounter[
@@ -368,8 +368,8 @@ function SubmitWord(guess: string) {
         ? guessLettersCounter[guessLetters[i]] + 1
         : 1;
 
-      goalLettersCounter[guessLetters[i]] = goalLettersCounter[guessLetters[i]]
-        ? goalLettersCounter[guessLetters[i]] + 1
+      goalLettersCounter[goalLetters[i]] = goalLettersCounter[goalLetters[i]]
+        ? goalLettersCounter[goalLetters[i]] + 1
         : 1;
 
       if (goalLetters.includes(guessLetters[i])) {
@@ -382,6 +382,9 @@ function SubmitWord(guess: string) {
         fitness[i] = 'unk';
       }
     }
+
+    console.log(guessLettersCounter);
+    console.log(goalLettersCounter);
 
     for (let i = guessLetters.length - 1; i >= 0; i--) {
       if (goalLetters.includes(guessLetters[i])) {
