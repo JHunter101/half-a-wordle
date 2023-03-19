@@ -42,14 +42,14 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  outline: min(0.6vw, 4px) solid white;
+  outline: min(0.45vw, 3px) solid white;
   text-align: center;
   aspect-ratio: 1/1;
 }
 
 #game .grid {
   padding: 5vh 10%;
-  gap: min(3vw, 20px);
+  gap: min(1.5vw, 10px);
   place-items: center stretch;
   margin: auto;
 }
