@@ -2,7 +2,7 @@ window.addEventListener('load', (event) => {
   let lCount = 5;
   const rows = 6;
   const preFilled = 2;
-  const difficulty = 53;
+  const difficulty = 10;
   const urlParams = new URLSearchParams(window.location.search);
   const _lCount = urlParams.get('lCount');
   if (_lCount) {
