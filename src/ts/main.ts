@@ -135,7 +135,7 @@ function onSight(lCount = 5, rows = 6) {
   const keyboard = document.getElementById('keyboard');
   if (keyboard) {
     keyboard.classList.add('grid');
-    keyboard.style.width = `min(${80 + lCount * 2}%, ${800 + lCount * 40}px)`;
+    keyboard.style.width = `min(100%, ${800 + lCount * 40}px)`;
   }
   keys.forEach((key) => {
     const kbd = document.createElement('kbd');
