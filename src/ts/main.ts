@@ -289,7 +289,7 @@ function getFromSession(item: string): any {
       {
         const gameSettingsString = sessionStorage.getItem('gameSettings');
         if (gameSettingsString) {
-          return JSON.parse(gameSettingsString).lCount;
+          return Number(JSON.parse(gameSettingsString).lCount);
         }
       }
       break;
@@ -297,7 +297,7 @@ function getFromSession(item: string): any {
       {
         const gameSettingsString = sessionStorage.getItem('gameSettings');
         if (gameSettingsString) {
-          return JSON.parse(gameSettingsString).difficulty;
+          return Number(JSON.parse(gameSettingsString).difficulty);
         }
       }
       break;
@@ -305,7 +305,7 @@ function getFromSession(item: string): any {
       {
         const gameSettingsString = sessionStorage.getItem('gameSettings');
         if (gameSettingsString) {
-          return JSON.parse(gameSettingsString).preFilled;
+          return Number(JSON.parse(gameSettingsString).preFilled);
         }
       }
       break;
@@ -313,7 +313,7 @@ function getFromSession(item: string): any {
       {
         const gameSettingsString = sessionStorage.getItem('gameSettings');
         if (gameSettingsString) {
-          return JSON.parse(gameSettingsString).rows;
+          return Number(JSON.parse(gameSettingsString).rows);
         }
       }
       break;
@@ -460,6 +460,16 @@ function SubmitWord(guess: string) {
   }
 
   const fitness = GetWordFitness(guess, goalWord);
+
+  if (
+    Object.values(fitness).reduce(
+      (count, value) => count + (value === 'found' ? 1 : 0),
+      0,
+    ) >= getFromSession('lCount')
+  ) {
+    console.log('Game Over');
+  }
+
   gameBoard = UpdateGameBoard(gameBoard, guess, fitness);
   letterStatus = UpdateLetterStatus(letterStatus, guess, fitness);
 
