@@ -38,6 +38,9 @@ function linearNormalize(
 fs.createReadStream(path.join(inputDirPath, 'WORD_DATA.csv'))
   .pipe(csv())
   .on('data', (data: inputWordData) => {
+
+    if(/^[a-zA-Z]+$/.test(data.WORD)){
+
     data.WORD = data.WORD.toUpperCase();
     GLOBAL_WORD_DATA_SET.add(data.WORD);
 
@@ -52,7 +55,7 @@ fs.createReadStream(path.join(inputDirPath, 'WORD_DATA.csv'))
       saveToFile(GAME_WORD_DATA_SET, 'WD' + Math.floor(wordCount / 1000) + 'K');
     }
     wordCount += 1;
-  })
+  }})
   .on('end', function () {
     const fileName = 'GLOBAL_WORD_DATA_SET';
     const _GLOBAL_WORD_DATA_SET = JSON.stringify(
@@ -106,3 +109,4 @@ export const ${fileName}: WordData = ${output}
     },
   );
 }
+
