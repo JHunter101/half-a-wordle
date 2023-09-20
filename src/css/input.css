@@ -2,16 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 /*-------------------------------------------------------------- # Base Section Start--------------------------------------------------------------*/
 :root {
-  --main-bg-color: #000000;
-  --accent-bg-color: #f5f5f5;
+  --main-bg-color: #000;
+  --accent-bg-color: #fff;
 }
 
 html * {
+  text-align: center;
   font-family: 'Monospace', sans-serif !important;
-  background: black;
-  color: white;
+  background: var(--main-bg-color);
+  color: var(--accent-bg-color);
+  font-size: 16px;
 }
 
 body {
@@ -20,8 +34,144 @@ body {
   height: 100vh;
 }
 
-.section {
-  padding: 4% 10%;
+.section-container {
+  margin: auto;
+  padding: 10% 10%;
+}
+
+@media (min-width: 1200px) {
+  .section-container {
+    padding: 5% 25%;
+  }
+
+  .section-container-desk-wide {
+    padding: 5% 10% !important;
+  }
+}
+
+.air {
+  height: min(16vh, 4rem);
+}
+
+.h-screen {
+  height: clamp(100dvh, 100dvh, 250vh);
+}
+
+/* General Section */
+
+.hidden {
+  display: none !important;
+}
+
+@media (min-width: 1200px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1,
+h2 {
+  text-transform: capitalize;
+  text-align: center;
+  font-size: min(7.5vw, 2.5rem);
+  margin: min(2vh, 0.5rem) 0;
+  font-weight: 800;
+}
+
+h3,
+h4 {
+  text-align: center;
+  text-transform: capitalize;
+  font-size: min(6vw, 2rem);
+  font-weight: 600;
+}
+
+h5,
+h6,
+p {
+  font-size: min(3vw, 1rem);
+  text-align: left;
+  font-weight: 400;
+  margin-top: min(3vw, 1rem);
+}
+
+h1,
+h3,
+h5,
+p {
+  font-style: normal;
+}
+
+h2,
+h4,
+h6 {
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* Main Section */
+#main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  position: relative;
+}
+
+#main #logo img {
+  width: min(90vw, 30rem);
+}
+
+#main #scroll-down {
+  width: min(45vw, 15rem);
+  bottom: 2%;
+  position: absolute;
+}
+
+#main #vl-container {
+  margin: min(8vh, 2rem) 0;
+}
+
+#main #vl-container .vl {
+  text-align: center;
+  border-left: min(0.4vh, 0.1rem) solid #0a0c1f;
+  height: min(40vh, 10rem);
+  display: flex;
+  justify-content: center;
+}
+
+#main h1,
+#main h3 {
+  text-transform: uppercase;
+  margin: 0;
+}
+
+#main h1 {
+  font-size: min(12vw, 4rem);
+  font-weight: 1000;
+  letter-spacing: min(0.12vw, 0.4rem);
+}
+
+#main h3 {
+  letter-spacing: min(3vw, 1rem);
+  text-shadow: 0px min(0.16vh, 0.04rem) min(0.16vh, 0.04rem) rgba(0, 0, 0, 0.25);
+}
+
+#main h4 {
+  letter-spacing: min(0.6vw, 0.2rem);
 }
 
 /*-------------------------------------------------------------- # Air Section --------------------------------------------------------------*/
@@ -29,6 +179,24 @@ body {
 #air-top,
 #air-bot {
   padding: 1% 0;
+}
+
+/*-------------------------------------------------------------- # Main Menu Section --------------------------------------------------------------*/
+
+/* Style the labels within the options-container */
+.options-container label {
+  display: block;
+  font-size: min(3vw, 1rem);
+  font-weight: 600;
+  margin-top: min(6vw, 2rem);
+}
+
+/* Style the select elements within the options-container */
+.options-container select {
+  width: 35%;
+  text-align: center;
+  padding: min(1.5vw, 0.5rem);
+  border: 2px solid #fff;
 }
 
 /*-------------------------------------------------------------- # Game Section --------------------------------------------------------------*/
@@ -130,4 +298,22 @@ body {
   100% {
     transform: rotateX(0deg);
   }
+}
+
+/*-------------------------------------------------------------- # Buttons Section --------------------------------------------------------------*/
+#buttons {
+  padding: 0% 25%;
+}
+
+.btn-black {
+  background-color: black;
+  padding: min(1.5vw, 0.5rem);
+  border: 2px solid #fff;
+  margin: min(1.5vw, 0.5rem);
+}
+
+/* Style the buttons on hover */
+.btn-black:hover {
+  background-color: white;
+  color: black;
 }

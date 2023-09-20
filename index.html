@@ -3,18 +3,87 @@
   <head>
     <title>Half A Wordle</title>
     <link rel="stylesheet" type="text/css" href="dist/css/output.css" />
-    <script>
-      var exports = {};
-    </script>
+    <script src="dist/ts/common.js"></script>
     <script type="module" src="dist/ts/main.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
 
   <body>
-    <div class="flex h-screen">
-      <section id="game" class="section m-auto">
+    <div class="flex flex-col h-screen">
+      <section id="main-menu" class="section-container">
+        <div id="main-menu-message">
+          <h1>Half-A-Wordle</h1>
+          <h3>By Jack Chen</h3>
+          <p>
+            Half-A-Wordle is a fresh take on the popular Wordle game from The
+            New York Times. Unlike Wordle, where initial guesses can feel
+            random, arbitrary and less engaging, Half-A-Wordle starts halfway
+            through, keeping every game consistently engaging.
+          </p>
+          <p>
+            We also curated an extensive word database to provide fresh and
+            challenging puzzles for every player. Our diverse word selection
+            will test your vocabulary and problem-solving skills. And with the
+            customization options, you can cater each game to your unique
+            preferences.
+          </p>
+        </div>
+        <div id="main-menu-settings">
+          <div class="options-container wow fadeIn">
+            <form>
+              <label>Select Language:</label>
+              <select id="language-setting">
+                <option value="English">English</option>
+              </select>
+              <label>Select Letter Count:</label>
+              <select id="word-length-setting">
+                <option value="4">4</option>
+                <option value="5" selected>5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+              </select>
+              <label>Select Guess Attempts:</label>
+              <select id="total-attempts-setting">
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6" selected>6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+              </select>
+              <label>Word Database Size:</label>
+              <select id="difficulty-setting">
+                <option value="10" selected>Normal (10k)</option>
+                <option value="20">Hard (20k)</option>
+                <option value="30">Very Hard (30k)</option>
+                <option value="40">Insane (40k)</option>
+                <option value="50">Impossible (50k)</option>
+              </select>
+            </form>
+          </div>
+        </div>
+      </section>
+      <section id="game" class="section-container hidden">
         <div id="game-board" class="grid grid-flow-rows"></div>
         <div id="keyboard" class="grid grid-flow-rows"></div>
+      </section>
+      <section id="buttons" class="section-container">
+        <div class="button-container">
+          <a
+            href="#air"
+            class="btn btn-black"
+            onclick="hide_elem('main-menu'); unhide_elem('game'); setup();
+              saveProgress(); "
+            >(Re)Start
+          </a>
+          <a
+            href="#air"
+            class="btn btn-black"
+            onclick="hide_elem('game'); unhide_elem('main-menu'); setup();
+              saveProgress(); "
+            >Return To Main Menu
+          </a>
+        </div>
       </section>
     </div>
   </body>

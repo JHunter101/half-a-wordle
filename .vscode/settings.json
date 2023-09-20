@@ -6,7 +6,7 @@
   "editor.formatOnSaveMode": "file", // required to format on save
   "files.autoSave": "onFocusChange", // optional but recommended
   "vs-code-prettier-eslint.prettierLast": true, // set as "true" to run 'prettier' last not first
-  "eslint.nodePath": "${workspaceFolder}/../node_modules",
-  "prettier.prettierPath": "${workspaceFolder}/../node_modules/prettier",
-  "typescript.tsdk": "${workspaceFolder}/../node_modules/typescript/lib"
+  "eslint.nodePath": "../../node_modules",
+  "prettier.prettierPath": "../../node_modules/prettier",
+  "typescript.tsdk": "../../node_modules/typescript/lib"
 }

@@ -1,22 +1,37 @@
-window.addEventListener('load', (event) => {
-  let lCount = 5;
-  const rows = 6;
-  const preFilled = 2;
-  const difficulty = 10;
-  const urlParams = new URLSearchParams(window.location.search);
-  const _lCount = urlParams.get('lCount');
-  if (_lCount) {
-    lCount = Number(_lCount);
-  }
-  setup(lCount, rows, preFilled, difficulty);
-});
+// Import
+import { GLOBAL_WORD_DATA_SET } from '../wd/GLOBAL_WORD_DATA_SET.js';
+import { WD10K } from '../wd/WD10K.js';
+import { WD20K } from '../wd/WD20K.js';
+import { WD30K } from '../wd/WD30K.js';
+import { WD40K } from '../wd/WD40K.js';
+import { WD50K } from '../wd/WD50K.js';
+import { WD55K } from '../wd/WD55K.js';
 
-function setup(
-  lCount: number,
-  rows: number,
-  preFilled: number,
-  difficulty: number,
-) {
+(window as any).setup = function setup() {
+  const game_board = document.getElementById('game-board');
+  if (game_board) {
+    game_board.innerHTML = ''; // This will remove all child elements and their content
+  }
+  const keyboard = document.getElementById('keyboard');
+  if (keyboard) {
+    keyboard.innerHTML = ''; // This will remove all child elements and their content
+  }
+
+  const _lCount = document.getElementById(
+    'word-length-setting',
+  ) as HTMLInputElement;
+  const _rows = document.getElementById(
+    'total-attempts-setting',
+  ) as HTMLInputElement;
+  const _difficulty = document.getElementById(
+    'difficulty-setting',
+  ) as HTMLInputElement;
+
+  const lCount = parseInt(_lCount.value);
+  const rows = parseInt(_rows.value);
+  const difficulty = parseInt(_difficulty.value);
+  const preFilled = Math.ceil(rows / 3);
+
   sessionStorage.setItem('currentCellX', '0');
   sessionStorage.setItem('currentCellY', '0');
   onSight(lCount, rows);
@@ -30,7 +45,7 @@ function setup(
     { gameBoard: [], letterStatus: {}, goalWord: '' },
   );
   InitGame();
-}
+};
 
 // TYPES
 type LetterStatusLettersToCount = {
@@ -62,15 +77,6 @@ type gameSettingsType = {
   rows: number;
   preFilled: number;
 } | null;
-
-// Import
-import { GLOBAL_WORD_DATA_SET } from '../wd/GLOBAL_WORD_DATA_SET.js';
-import { WD10K } from '../wd/WD10K.js';
-import { WD20K } from '../wd/WD20K.js';
-import { WD30K } from '../wd/WD30K.js';
-import { WD40K } from '../wd/WD40K.js';
-import { WD50K } from '../wd/WD50K.js';
-import { WD53K } from '../wd/WD53K.js';
 
 // Front-end
 function onSight(lCount = 5, rows = 6) {
@@ -135,7 +141,7 @@ function onSight(lCount = 5, rows = 6) {
   const keyboard = document.getElementById('keyboard');
   if (keyboard) {
     keyboard.classList.add('grid');
-    keyboard.style.width = `min(100%, ${800 + lCount * 40}px)`;
+    keyboard.style.width = `min(100%, ${800 + 5 * 40}px)`;
   }
   keys.forEach((key) => {
     const kbd = document.createElement('kbd');
@@ -226,7 +232,7 @@ function updateLetterStatusColor(letter: string, color: string): void {
         cell.style.backgroundColor = '#538d4e';
       }
     }
-  }, 1100);
+  }, 850);
 }
 
 // Front to Back to Front
@@ -579,7 +585,7 @@ function InitGame(): void {
     difficulty: number,
     goalWord = '',
   ): string {
-    function GetWordData(lCount: number, difficulty = 15): string[] {
+    function GetWordData(lCount: number, difficulty = 30) {
       switch (difficulty) {
         case 10:
           return WD10K[lCount];
@@ -596,11 +602,8 @@ function InitGame(): void {
         case 50:
           return WD50K[lCount];
           break;
-        case 53:
-          return WD53K[lCount];
-          break;
         default:
-          return WD53K[lCount];
+          return WD55K[lCount];
       }
     }
 
@@ -651,6 +654,7 @@ function InitGame(): void {
     }
     const guess = GenerateWord(lCount, difficulty, goalWord);
     const newBoardAndStatus = SubmitWord(guess);
+
     return PreFillBoard(
       newBoardAndStatus.gameBoard,
       newBoardAndStatus.letterStatus,
