@@ -22,7 +22,7 @@
 
 html * {
   text-align: center;
-  font-family: 'Monospace', sans-serif !important;
+  font-family: 'Share-TechMono', 'Ubuntu Mono', 'Helvetica Neue', sans-serif !important;
   background: var(--main-bg-color);
   color: var(--accent-bg-color);
   font-size: 16px;
