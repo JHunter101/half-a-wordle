@@ -1,0 +1,53 @@
+﻿@using Beauo.Components.Settings
+
+@inject IGameStateService GameService
+@inject ILocalStorageService LocalStorage
+
+<div>
+	<Column>
+		<Heading Level=1 Size="TextSizeClass.Huge">half a wordle</Heading>
+
+		<Select Label="word length"
+				@bind-Value="_settings.WordLength"
+				Options="@WordLengthOptions" />
+
+		<Select Label="max attempts"
+				@bind-Value="_settings.MaxGuesses"
+				Options="@MaxAttemptOptions" />
+
+		<Button Text="start game" OnClick="StartGameAsync" />
+	</Column>
+</div>
+
+@code {
+	private const string SettingsKey = "half-a-wordle.settings";
+	private readonly GameSettings _settings = new();
+	private static readonly HashSet<int> WordLengthOptions = [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+	private static readonly HashSet<int> MaxAttemptOptions = [4, 5, 6, 7, 8];
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (!firstRender)
+		{
+			return;
+		}
+
+		var savedSettings = await LocalStorage.GetAsync<GameSettings>(SettingsKey);
+
+		if (savedSettings is null)
+		{
+			return;
+		}
+
+		_settings.WordLength = savedSettings.WordLength;
+		_settings.MaxGuesses = savedSettings.MaxGuesses;
+
+		StateHasChanged();
+	}
+
+	private async Task StartGameAsync()
+	{
+		await LocalStorage.SetAsync(SettingsKey, _settings);
+		await GameService.StartNewGameAsync(_settings);
+	}
+}

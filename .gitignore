@@ -1,0 +1,41 @@
+## .NET / Visual Studio
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.dll
+*.exe
+*.pdb
+.vs/
+*.DotSettings.user
+
+## NuGet Packages (Local build outputs)
+nupkg/
+*.nupkg
+*.snupkg
+
+## IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+## OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Sass / CSS
+.sass-cache/
+*.css
+*.css.map
+*.sass.map
+*.scss.map
+*.razor.css
+
+# Keep this file
+!wwwroot/css/app.css
+
+# ReqNRoll
+*.feature.cs
